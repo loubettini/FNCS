@@ -1,8 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import isEmail from 'isemail';
-
 const md5 = require('md5');
+
 export class UserPanel extends React.Component{
     constructor(props){
         super(props)
@@ -10,38 +9,30 @@ export class UserPanel extends React.Component{
 
 
     render(){
-        return React.createElement(React.Fragment,null,
-                React.createElement('h1',{},this.props.name),
-                React.createElement('h1',{},this.props.prenom),
-                React.createElement('img', { src: "https://www.gravatar.com/avatar/" + md5(this.props.email)}))
+        return(
+            <>
+                <div className="card">
+                    <div className="card-image waves-effect waves-block waves-light">
+                            <img className="activator" src={"https://www.gravatar.com/avatar/" + md5(this.props.email)}alt="Avatar" ></img>
+                    </div>
+                    <div className="card-content">
+                        <span className="card-title activator grey-text text-darken-4">{this.props.prenom}<i
+                            className="material-icons right">{this.props.name}</i></span>
+                    </div>
+                </div>
+
+            </>
+        )
+
     }
 }
 
-const requiredEmailPropType = (props, propName, componentName) => {
-    const value = props[propName];
-
-    if (value == null || typeof value !== 'string' || !isEmail.validate(value)) {
-        return new TypeError(`Invalid Email Prop Value: ${value} for ${propName} in ${componentName}`);
-    }
-
-    return null;
-};
-
-const emailPropType = (props, propName, componentName) => {
-    if (props[propName] == null) {
-        return null;
-    }
-
-    return requiredEmailPropType(props, propName, componentName);
-};
-
-emailPropType.isRequired = requiredEmailPropType;
 
 
 UserPanel.propTypes={
     name:PropTypes.string.isRequired,
     prenom:PropTypes.string.isRequired,
-    email:emailPropType.isRequired
+    email:PropTypes.string.isRequired
 }
 UserPanel.defaultProps={
     name:'Bettini',
